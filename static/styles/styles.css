@@ -1,0 +1,99 @@
+body {
+    font-family:"Noto Sans",sans-serif;
+    margin: 0;
+}
+
+.top-bar {
+    height: 250px;
+    background-color: #1f35eb;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.logo img {
+    height: 100px;
+}
+
+.wrapper {
+    width: 50%;
+	position: relative;
+	padding: 10px;
+}
+
+.item-1,
+.item-2,
+.item-3 {
+    font-size: 20px;
+    display: inline;
+    animation-duration: 7s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    white-space: nowrap;
+    margin: 5px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.item-1{
+  animation-name: anim-1;
+}
+
+.item-2{
+  animation-name: anim-2;
+}
+
+.item-3{
+  animation-name: anim-3;
+}
+
+@keyframes anim-1 {
+  0%, 8.3% { top: -50%; opacity: 0; }
+  8.3%,25% { top: 0%; opacity: 1; }
+  33.33%, 100% { top: 50%; opacity: 0; }
+}
+
+@keyframes anim-2 {
+  0%, 33.33% { top: -50%; opacity: 0; }
+  41.63%, 58.29% { top: 0%; opacity: 1; }
+  66.66%, 100% { top: 50%; opacity: 0; }
+}
+
+@keyframes anim-3 {
+  0%, 66.66% { top: -50%; opacity: 0; }
+  74.96%, 91.62% { top: 0%; opacity: 1; }
+  100% { top: 50%; opacity: 0; }
+}
+
+.chartsbox{
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    width: 70%;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.95);
+
+    position: absolute;
+    top: 228px; /* Ustawienie odległości od górnej krawędzi strony */
+    left: 0;
+    right: 0;
+    background-color: white;
+}
+
+.chartsbox h1{
+    color: #1f35eb;
+    align-self: center;
+    font-family:"Noto Sans",sans-serif;
+}
+
+.chart-container {
+    padding: 50px;
+    margin: 0 auto;
+    width: 90%; 
+    height: 40vh;
+}
