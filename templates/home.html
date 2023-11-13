@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PredicTech Analytics</title>
-    <link rel="stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/styles.css') }}">
+    <link rel="stylesheet" type= "text/css" href= "{{ url_for('static',filename = 'css/app.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -38,59 +40,6 @@
             <canvas id="lineChart3"></canvas>
         </div>
     </div>
-
-
-    <script>
-        function createLineChart(canvasId, labels, values, borderColor, label, backgroundColor) {
-        var ctx = document.getElementById(canvasId).getContext("2d");
-        new Chart(ctx, {
-            type: "line",
-            data: {
-                labels: labels,
-                datasets: [
-                    {
-                        label: label,
-                        data: values,
-                        fill: true,
-                        lineTension: 0.1,
-                        backgroundColor: backgroundColor,
-                        borderColor: borderColor,
-                        lineTension: 0.5
-                    }
-                ]
-            },
-            options: {
-                scales: {
-                    x: {
-                        grid: {
-                        display: false
-                        }
-                    },
-                    y: {
-                        grid: {
-                        display: false
-                        }
-                    }
-                },
-                responsive: true,  
-                maintainAspectRatio: false,
-                
-            }
-        });
-    }
-
-    var labels1 = {{ labels1 | tojson }};
-    var values1 = {{ values1 | tojson }};
-    createLineChart("lineChart1", labels1, values1, "rgb(75, 192, 192)", "Current 1", "rgba(75,192,192,0.5)");
-
-    var labels2 = {{ labels2 | tojson }};
-    var values2 = {{ values2 | tojson }};
-    createLineChart("lineChart2", labels2, values2, "rgb(255,0 , 255)", "Current 2", "rgba(255, 0, 255, 0.5)");
-
-    var labels3 = {{ labels3 | tojson }};
-    var values3 = {{ values3 | tojson }};
-    createLineChart("lineChart3", labels3, values3, "rgb(31, 53, 235)", "Current 3", "rgba(31,53,235,0.5)");
-    
-    </script>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'js/app.js') }}"></script>
 </body>
 </html>
