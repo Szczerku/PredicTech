@@ -14,7 +14,7 @@ def fetch_data_from_database():
     connection = mysql.connector.connect(
         host='192.168.1.15',
         user='szczery',
-        password='Allegro123@',
+        password='*******',
         database='twoja_nowa_baza'
     )
 
