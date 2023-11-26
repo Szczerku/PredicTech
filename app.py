@@ -71,21 +71,21 @@ def fetch_data_chart_3():
     return  dummy_sensor_value
 
 def background_thread_chart_1():
-    print(f"Generowanie losowych wartości dla wykresu {1}")
+    print(f"Generation of random values for the chart {1}")
     while True:
         data = fetch_data_chart_1()
         socketio.emit(f'updateSensorData{1}', {'value': data, "date": get_current_datetime()})
         socketio.sleep(0.2)
 
 def background_thread_chart_2():
-    print(f"Generowanie losowych wartości dla wykresu {2}")
+    print(f"Generation of random values for the chart {2}")
     while True:
         data = fetch_data_chart_2()
         socketio.emit(f'updateSensorData{2}', {'value': data, "date": get_current_datetime()})
         socketio.sleep(0.2)
 
 def background_thread_chart_3():
-    print(f"Generowanie losowych wartości dla wykresu {3}")
+    print(f"Generation of random values for the chart {3}")
     while True:
         data = fetch_data_chart_3()
         socketio.emit(f'updateSensorData{3}', {'value': data, "date": get_current_datetime()})
