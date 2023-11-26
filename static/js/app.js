@@ -12,7 +12,7 @@ $(document).ready(function () {
                         fill: true,
                         backgroundColor: backgroundColor,
                         borderColor: borderColor,
-                        lineTension: 0.35,
+                        lineTension: 0,
                         data: []
                     }
                 ]
