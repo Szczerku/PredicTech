@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PredicTech Analytics</title>
+    <link rel="stylesheet" type= "text/css" href= "{{ url_for('static',filename = 'css/app.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://kit.fontawesome.com/40e86141b0.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <img src="https://www.predictech.co.uk/storage/app/uploads/public/64a/6b3/ae6/64a6b3ae68ce5827305860.svg" alt="PredicTech">
+        </div>
+        <nav>
+            <ul class="nav-links">
+              <li><a href="#"><i class="fa-solid fa-house-chimney-user"></i> Home</a></li>
+              <li><a href="#"><i class="fa-solid fa-chart-column"></i> Analytics</a></li>
+              <li><a href="#"><i class="fa-solid fa-gear"></i> Settings</a></li>
+              <li><a href="#"><i class="fa-solid fa-circle-info"></i> Support</a></li>
+            </ul>
+          </nav>
+          <a class="account"><button>User</button></a>          
+    </header>
+    <div class="container1">
+        <div class="option-bar">
+            <h1>Analytics</h1>
+            <div class="option-buttons">
+                <button onclick="wybierzOpcje('productivity')">Productivity</button>
+                <button onclick="wybierzOpcje('energy')">Energy/Emissions</button>
+                <button onclick="wybierzOpcje('predictive')">Predictive Maintenace</button>
+              </div>
+              <script>
+                function wybierzOpcje(opcja) {
+                  console.log('Wybrano:', opcja);
+                  // Tutaj możesz wywołać funkcję lub wykonać inne działania w zależności od wyboru użytkownika
+                }
+              </script>
+        </div>
+        <div class="info-boxes">
+            <div class="box1">
+                <p>Jobs Completed/Hour</p>
+                <div class="value">03<i class="fa-solid fa-square-check"></i></div>
+            </div>
+            <div class="box2">
+                <p>Cycle Time</p>
+                <div class="value">1 hr 22 min<i class="fa-solid fa-clock"></i></div>
+            </div>
+            <div class="box3">
+                <p>Overall Equipment Efficiency</p>
+                <div class="value">80%<i class="fa-solid fa-gauge-simple-high"></i></div>
+            </div>
+            <div class="box4">
+                <p>Operating Efficiency</p>
+                <div class="value">75%<i class="fa-solid fa-gauge-simple-high"></i></div>
+            </div>
+            <div class="box5">
+                <p>Energy Consumption</p>
+                <div class="value">12.5 kWh<i class="fa-solid fa-bolt"></i></div>
+            </div>
+        </div>
+        <div class="chartsbox">
+            <div class="chart-container">
+                <canvas id="lineChart1"></canvas>
+            </div>
+        
+            <div class="chart-container">
+                <canvas id="lineChart2"></canvas>
+            </div>
+        
+            <div class="chart-container">
+                <canvas id="lineChart3"></canvas>
+            </div>
+            <div class="emptyblock">
+                
+            </div>
+        </div>
+        <script type="text/javascript" src="{{ url_for('static', filename = 'js/app.js') }}"></script>
+    </div>
+</body>
+</html>
