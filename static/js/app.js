@@ -70,7 +70,7 @@ $(document).ready(function () {
     const ctx3 = document.getElementById("lineChart3").getContext("2d");
     const lineChart3 = configureChart(ctx3, "Voltage 3", "rgba(31,53,235,0.5)", "rgb(31, 53, 235)");
 
-    var socket = io.connect("http://127.0.0.1:5000/");
+    var socket = io.connect();
 
     socket.on("updateSensorData1", function (msg) {
         handleSocketData(lineChart1, msg);
