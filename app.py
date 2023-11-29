@@ -14,9 +14,9 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 #data from linux server - testing!! table_1
 def fetch_data_from_database1():
     connection = mysql.connector.connect(
-    host='192.168.1.15',
+    host='*',
     user='szczery',
-    password='Allegro123@',
+    password='*',
     database='twoja_nowa_baza'
     )
     cursor = connection.cursor()
@@ -28,9 +28,9 @@ def fetch_data_from_database1():
 
 def fetch_data_from_database2():
     connection = mysql.connector.connect(
-    host='192.168.1.15',
+    host='*',
     user='szczery',
-    password='Allegro123@',
+    password='*',
     database='twoja_nowa_baza'
     )
     cursor = connection.cursor()
@@ -42,9 +42,9 @@ def fetch_data_from_database2():
 
 def fetch_data_from_database3():
     connection = mysql.connector.connect(
-    host='192.168.1.15',
+    host='*',
     user='szczery',
-    password='Allegro123@',
+    password='*',
     database='twoja_nowa_baza'
     )
     cursor = connection.cursor()
