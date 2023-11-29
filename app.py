@@ -73,21 +73,21 @@ def fetch_data_chart_3():
 def background_thread_chart_1():
     print(f"Generation of random values for the chart {1}")
     while True:
-        data = random.randint(1, 10)
+        data = random.randrange(1,10)
         socketio.emit(f'updateSensorData{1}', {'value': data, "date": get_current_datetime()})
         socketio.sleep(0.2)
 
 def background_thread_chart_2():
     print(f"Generation of random values for the chart {2}")
     while True:
-        data = random.randint(1, 100)
+        data = random.randrange(1,100)
         socketio.emit(f'updateSensorData{2}', {'value': data, "date": get_current_datetime()})
         socketio.sleep(0.2)
 
 def background_thread_chart_3():
     print(f"Generation of random values for the chart {3}")
     while True:
-        data = random.randint(1, 1000)
+        data = random.randrange(1,1000)
         socketio.emit(f'updateSensorData{3}', {'value': data, "date": get_current_datetime()})
         socketio.sleep(0.2)
 
@@ -109,4 +109,4 @@ def disconnect():
     print('Client disconnected',  request.sid)
 
 if __name__ == '__main__':
-    socketio.run(app)
+    socketio.run(host="0.0.0.0",port=5000)
