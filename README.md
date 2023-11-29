@@ -1,6 +1,8 @@
 # PredicTech
 UI for sensors
 
+How to run the app:
+
 sudo apt update
 
 mkdir PROTOTYPE
