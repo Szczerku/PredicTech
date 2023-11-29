@@ -1,5 +1,4 @@
 # PredicTech
-UI for sensors
 
 How to run the app:
 
