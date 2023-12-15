@@ -1,5 +1,5 @@
-$(document).ready(function () {
-    const MAX_DATA_COUNT = 50;
+$(document).ready(async function () {
+    const MAX_DATA_COUNT = 10;
 
     function configureChart(ctx, label, backgroundColor, borderColor) {
         return new Chart(ctx, {
@@ -12,7 +12,7 @@ $(document).ready(function () {
                         fill: true,
                         backgroundColor: backgroundColor,
                         borderColor: borderColor,
-                        lineTension: 0,
+                        lineTension: 0.33,
                         data: []
                     }
                 ]
@@ -37,7 +37,7 @@ $(document).ready(function () {
     }
 
     function addData(lineChart, label, data) {
-        lineChart.data.labels.push(label);
+        lineChart.data.labels.push(label); //timestamp
         lineChart.data.datasets.forEach((dataset) => {
             dataset.data.push(data);
         });
@@ -59,6 +59,10 @@ $(document).ready(function () {
             removeFirstData(lineChart);
         }
         addData(lineChart, msg.date, msg.value);
+
+        while (lineChart.data.labels.length > MAX_DATA_COUNT) {
+            removeFirstData(lineChart);
+        }
     }
 
     const ctx1 = document.getElementById("lineChart1").getContext("2d");
@@ -70,7 +74,8 @@ $(document).ready(function () {
     const ctx3 = document.getElementById("lineChart3").getContext("2d");
     const lineChart3 = configureChart(ctx3, "Voltage 3", "rgba(31,53,235,0.5)", "rgb(31, 53, 235)");
 
-    var socket = io.connect();
+    var socket = io();
+    
 
     socket.on("updateSensorData1", function (msg) {
         handleSocketData(lineChart1, msg);

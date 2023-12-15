@@ -1,96 +1,58 @@
 import random
-from threading import Lock
+from threading import Lock, Thread
 from flask_socketio import SocketIO
 from datetime import datetime
 from flask import Flask, render_template, request
-import mysql.connector
+import threading
 
 thread_lock = Lock()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'szczery!'
 socketio = SocketIO(app, cors_allowed_origins='*')
 
+chart_threads = {}  # Store threads for each chart
 
-#data from linux server - testing!! table_1
-def fetch_data_from_database1():
-    connection = mysql.connector.connect(
-    host='192.168.1.15',
-    user='szczery',
-    password='Allegro123@',
-    database='twoja_nowa_baza'
-    )
-    cursor = connection.cursor()
-    cursor.execute('SELECT random_number FROM table_1 ORDER BY id DESC LIMIT 1')
-    data = cursor.fetchall()
-    cursor.close()
-    connection.close()
-    return [item[0] for item in data] if data else None
+class StoppableThread(Thread): 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._stop_event = threading.Event()
 
-def fetch_data_from_database2():
-    connection = mysql.connector.connect(
-    host='192.168.1.15',
-    user='szczery',
-    password='Allegro123@',
-    database='twoja_nowa_baza'
-    )
-    cursor = connection.cursor()
-    cursor.execute('SELECT random_number FROM table_2 ORDER BY id DESC LIMIT 1')
-    data = cursor.fetchall()
-    cursor.close()
-    connection.close()
-    return [item[0] for item in data] if data else None
+    def stop(self):
+        self._stop_event.set()
 
-def fetch_data_from_database3():
-    connection = mysql.connector.connect(
-    host='192.168.1.15',
-    user='szczery',
-    password='Allegro123@',
-    database='twoja_nowa_baza'
-    )
-    cursor = connection.cursor()
-    cursor.execute('SELECT random_number FROM table_3 ORDER BY id DESC LIMIT 1')
-    data = cursor.fetchall()
-    cursor.close()
-    connection.close()
-    return [item[0] for item in data] if data else None
+    def stopped(self):
+        return self._stop_event.is_set()
+
+def display_active_threads():
+    thread_list = threading.enumerate()
+    for thread in thread_list:
+        print(thread)
+        
 
 def get_current_datetime():
     now = datetime.now()
     return now.strftime("%m/%d/%Y %H:%M:%S")
 
-def fetch_data_chart_1():
-    dummy_sensor_value = fetch_data_from_database1()[0]
-    return  dummy_sensor_value
+def background_thread_chart(chart_number, sleep_time):
+    try:
+        print(f"Generation of random values for the chart {chart_number}")
+        connected = True
+        while connected and not chart_threads[chart_number].stopped():
+            data = random.randrange(1, 10**chart_number)
+            print(data)
+            socketio.emit(f'updateSensorData{chart_number}', {'value': data, "date": get_current_datetime()})
+            socketio.sleep(sleep_time)
+    except Exception as e:
+        print(f"Error in background_thread_chart {chart_number}: {str(e)}")
+        chart_threads[chart_number].stop()
 
-def fetch_data_chart_2():
-    dummy_sensor_value = fetch_data_from_database2()[0]
-    return  dummy_sensor_value
-
-def fetch_data_chart_3():
-    dummy_sensor_value = fetch_data_from_database3()[0]
-    return  dummy_sensor_value
-
-def background_thread_chart_1():
-    print(f"Generation of random values for the chart {1}")
-    while True:
-        data = random.randrange(1,10)
-        socketio.emit(f'updateSensorData{1}', {'value': data, "date": get_current_datetime()})
-        socketio.sleep(0.2)
-
-def background_thread_chart_2():
-    print(f"Generation of random values for the chart {2}")
-    while True:
-        data = random.randrange(1,100)
-        socketio.emit(f'updateSensorData{2}', {'value': data, "date": get_current_datetime()})
-        socketio.sleep(0.2)
-
-def background_thread_chart_3():
-    print(f"Generation of random values for the chart {3}")
-    while True:
-        data = random.randrange(1,1000)
-        socketio.emit(f'updateSensorData{3}', {'value': data, "date": get_current_datetime()})
-        socketio.sleep(0.2)
-
+def start_chart_threads():
+    with thread_lock:
+        for chart_number in range(1, 4):
+            if chart_number not in chart_threads or not chart_threads[chart_number].is_alive():
+                chart_threads[chart_number] = StoppableThread(target=background_thread_chart, args=(chart_number, 0.5))
+                chart_threads[chart_number].daemon = True
+                chart_threads[chart_number].start()
 
 @app.route('/')
 def index():
@@ -98,15 +60,28 @@ def index():
 
 @socketio.on('connect')
 def connect():
+    
     print('Client connected')
-    with thread_lock:
-        socketio.start_background_task(background_thread_chart_1)
-        socketio.start_background_task(background_thread_chart_2)
-        socketio.start_background_task(background_thread_chart_3)
+    display_active_threads()
+    start_chart_threads()
+    on_reconnect()
 
 @socketio.on('disconnect')
 def disconnect():
-    print('Client disconnected',  request.sid)
+    print('Client disconnected', request.sid)
+    # Oznacz wątki jako zatrzymane
+    for chart_number in chart_threads:
+        chart_threads[chart_number].stop()
+
+@socketio.on('reconnect')
+def on_reconnect():
+    print('Client reconnected')
+    # Upewnij się, że wątki są zatrzymane przed ich ponownym uruchomieniem
+    for chart_number in chart_threads:
+        chart_threads[chart_number].stop()
+        chart_threads[chart_number].join()  # Poczekaj na zakończenie wątku
+    start_chart_threads()
 
 if __name__ == '__main__':
-    socketio.run(host="0.0.0.0",port=5000)
+    socketio.run(app, host="0.0.0.0", port=5000)
+
